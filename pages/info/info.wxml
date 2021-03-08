@@ -1,0 +1,139 @@
+<!--pages/info/info.wxml-->
+<!-- 头部 -->
+<view class="info-header">
+  <!-- <image src='../../assets/order_content_icon_daishou@2x.png'></image> -->
+  <!-- 待备货 -->
+  <image wx:if="{{detail.state == 1}}" src='../../assets/order_content_icon_stockup@2x.png'></image>
+  <!-- 待质检 -->
+  <image wx:if="{{detail.state == 2}}" src='../../assets/order_content_icon_wait@2x.png'></image>
+  <!-- 质检异常 -->
+  <image wx:if="{{detail.state == 3}}" src='../../assets/order_content_icon_abnormal@2x.png'></image>
+  <!-- 待提货 -->
+  <image wx:if="{{detail.state == 4}}" src='../../assets/order_content_icon_mention@2x.png'></image>
+  <!-- 待配送 -->
+  <image wx:if="{{detail.state == 5}}" src='../../assets/order_content_icon_daishou@2x.png'></image>
+  <!-- 配送完成 -->
+  <image wx:if="{{detail.state == 6}}" src='../../assets/order_content_icon_completed@2x.png'></image>
+  <view class="info-header-title">
+    <text wx:if="{{detail.state == 1}}" class="info-header-title-big-font">状态：待备货</text>
+    <text wx:if="{{detail.state == 2}}" class="info-header-title-big-font">状态：待质检</text>
+    <text wx:if="{{detail.state == 3}}" class="info-header-title-big-font">状态：质检异常</text>
+    <text wx:if="{{detail.state == 4}}" class="info-header-title-big-font">状态：待提货</text>
+    <text wx:if="{{detail.state == 5}}" class="info-header-title-big-font">状态：待配送</text>
+    <text wx:if="{{detail.state == 6}}" class="info-header-title-big-font">状态：配送完成</text>
+    <text wx:if="{{detail.car_number&&detail.state == 6}}" class="info-header-title-car">提货车牌：{{detail.car_number}}</text>
+  </view>
+  <text wx:if="{{detail.driver_name&&detail.state == 6}}" class="info-header-person">司机：{{detail.driver_name}}</text>
+</view>
+
+<!-- 质检原因 -->
+<view class="last-item-explain" wx:if="{{detail.unusual_reason}}">
+  <text>原因：{{detail.unusual_reason}}</text>
+  <text>质检员：{{detail.qc_name}}</text>
+</view>
+<!-- 个人信息 -->
+<view class="info-person">
+  <view class="info-person-top">
+    <view class="info-person-top-left">
+      <image src="../../assets/order_content_icon_address@2x.png"></image>
+      <text style="font-weight: bold;">{{detail.wholesaler_user.name}}</text>
+      <view class="info-person-icon">
+        <image src="../../assets/center_content_icon_label@2x.png"></image>
+        <text class="spe-back">批发商</text>
+      </view>
+    </view>
+    <text>{{detail.wholesaler_user.phone}}</text>
+  </view>
+  <view class="info-person-bottom">{{detail.wholesaler_user.addresses[0].province_name+detail.wholesaler_user.addresses[0].city_name+detail.wholesaler_user.addresses[0].area_name+detail.wholesaler_user.addresses[0].detail}}</view>
+</view>
+
+<!-- 商品信息 -->
+<view class="info-pro">
+    <view class="info-card-item-content-box" wx:for="{{detail.items}}" wx:key="id">
+        <text class="pro-title">{{item.name}}</text>
+        <view class="pro-price">
+          <view>
+            <!-- {{item.price_plat/100}} -->
+            <text>¥<text class="big-font">*** </text>/{{item.unit}}</text>
+            <text class="pro-weight">x {{item.num}}{{item.unit}}</text>
+          </view>
+          <!-- <text class="sum-price">¥15000.00</text> -->
+        </view>
+    </view>
+    <view class="info-card-item-content-sumary">
+        <view>
+          总价：
+        </view>
+        <!-- {{detail.total_amount_supplier/100}} -->
+        <text>¥ <text class="spe-color">***</text></text>
+    </view>
+</view>
+
+<!-- 采购单信息 -->
+<view class="purchase-order-info">
+  <view class="purchase-order-info-title">采购单信息</view>
+  <view class="purchase-order-info-item">
+    <text>采购单编号</text>
+    <text>{{detail.plat_purchase.sn}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>下 单 时 间</text>
+    <text>{{detail.plat_purchase.created_at}}</text>
+  </view>
+</view>
+
+<view class="purchase-order-info">
+  <view class="purchase-order-info-title">分拣单信息</view>
+  <view class="purchase-order-info-item">
+    <text>分拣单编号</text>
+    <text>{{detail.sn}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>下 单 时 间</text>
+    <text>{{detail.created_at}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>接 单 时 间</text>
+    <text>{{detail.receive_order_at}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>备 货 时 间</text>
+    <text>{{detail.prepare_at}}</text>
+  </view>
+</view>
+
+<view class="btn" wx:if="{{type==2&&detail.state == 2&&!detail.unusual_reason}}">
+  <!-- wx:if="{{detail.state == 2&&!detail.unusual_reason}}" -->
+  <text bindtap="startInspection">开始质检</text>
+</view>
+<view class="btn" wx:if="{{type==2&&detail.state == 2&&detail.unusual_reason}}">
+  <text bindtap="startInspection">重新质检</text>
+</view>
+<view class="btn" wx:if="{{type==2&&detail.state == 3&&detail.unusual_reason}}">
+  <text style="background: #ABB6C4;">重新质检</text>
+</view>
+
+
+<!-- 开始质检弹窗 -->
+<deliveryPopup id='insPopup' 
+      title='质检结果' 
+      btn_no='取消' 
+      btn_ok='确认'
+      bind:error="require_error"
+      bind:success="inspection_success"
+      >
+      <form class="login" bindsubmit="loginOrRegister">
+        <view class="login-input">
+          <radio-group class="radio-group" bindchange="radioChange">
+            <label class="radio" wx:for="{{items}}" wx:key="value">
+              <view class="tui-menu-list">
+                <radio class="checkCircle" color="#007aff" value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+              </view>
+            </label>
+          </radio-group>
+        </view>
+        <view class="login-input second-input no-margin-padding-top" wx:if="{{showReasonBox}}">
+          <textarea name="password" bindinput="getReason" value="{{reason}}" placeholder-class="teatarea-placeholder" placeholder="请输入质检异常原因"/>
+        </view>
+      </form>
+</deliveryPopup>

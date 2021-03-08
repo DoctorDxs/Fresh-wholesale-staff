@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="account-item-wrap">
+    <view class="name-card">
+    <!-- "{{userInfo.avatar ? userInfo.avatar:'../../assets/center_content_icon_label@2x.png'}}" -->
+    <!-- ../../assets/my.png -->
+      <image src="{{userInfo.avatar ? userInfo.avatar:'../../assets/my.png'}}"></image>
+      <view class="name-text">
+        <view class="name-icon">
+          <text>{{userInfo.name}}</text>
+        </view>
+        <view class="combination-icon">
+          <!-- 没有头像就使用默认头像 -->
+          <!-- ../../assets/center_content_icon_label@2x.png -->
+          <image src="../../assets/center_content_icon_label@2x.png"></image>
+          <text class="spe-back">{{userInfo.type == 1 ? '配送司机':'质检员'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="account-item">
+      <view class="item-title">当前账号</view>
+      <view class="item-value">{{userInfo.phone}}</view>
+    </view>
+
+    <view class="account-item">
+      <view class="item-title">职位</view>
+      <view class="item-value">{{userInfo.type == 1 ? '配送司机':'质检员'}}</view>
+    </view>
+  </view>
+
+  
+  <view class="account-item-wrap set-account">
+    <view class="account-item" bindtap="pweContor">
+      <view class="item-title">密码管理</view>
+      <image src="../../assets/center_content_icon_more@2x.png" class="icon-more"></image>
+    </view>
+  </view>
+
+  <view class="login-btns" bindtap="loginOut">
+      <button class="login-btn" formType="submit">退出登录</button>
+      <!-- <button class="login-register" bindtap="register">注册</button> -->
+    </view>
+</view>

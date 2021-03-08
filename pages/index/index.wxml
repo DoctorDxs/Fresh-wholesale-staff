@@ -1,0 +1,167 @@
+<!--index.wxml-->
+<view class="header">
+  <image src="../../assets/home_content_bg@2x.png"></image>
+  <view class="title-bar">
+    <text>您好：</text>
+    <image bindtap="accountInfo" src="../../assets/home_content_icon_setup@2x.png"></image>
+  </view>
+<view class="name-card">
+<!-- 没有头像就使用默认头像 -->
+  <image src="{{userInfo.avatar ? userInfo.avatar:'../../assets/my.png'}}"></image>
+  <view class="name-text">
+    <view class="name-icon">
+      <text>{{userInfo.name}}</text>
+    </view>
+    <view class="combination-icon">
+      <!-- ../../assets/center_content_icon_label@2x.png -->
+      <image src="../../assets/center_content_icon_label@2x.png"></image>
+      <text class="spe-back">{{userInfo.type == 1 ? '配送司机':'质检员'}}</text>
+    </view>
+  </view>
+</view>
+</view>
+
+<!-- tab -->
+
+<view class="tab">
+  <view class="tab-item {{activeId==item.state?'active':''}}" wx:for="{{tabData}}" wx:key="id" bindtap="toggleTab" data-item="{{item}}">
+    <text>{{item.name}}</text>
+    <view class="bottom-bar"></view>
+    <view wx:if="{{item.icon}}" class="num-icon">{{item.icon}}</view>
+  </view>
+</view>
+
+<!-- info -->
+
+<view class="info-card" wx:if="{{orderList&&orderList.length>0}}">
+  <view class="info-card-item" wx:for="{{orderList}}" wx:key="id" data-id="{{item.id}}" bindtap="goPurchaseInfo">
+    <view class="info-card-item-title">
+      <text>编号：{{item.sn}}</text>
+      <!-- 根据身份type以及state判断状态-->
+      <!-- 司机对应的状态有：(1,2,3待质检) 4待提货 5配送中 6已配送 -->
+      <!-- 质检对应的状态有：1待备货 2待质检 3质检异常 4质检成功待提货 (5,6已提货待配送) -->
+      <text class="pink-style">{{item.stateName}}</text>
+    </view>
+    <view class="info-card-item-content">
+      <view class="info-card-item-content-box" wx:for="{{item.purchase_delivery_goods}}"  wx:for-item="product" wx:key="id">
+        <text class="pro-title">{{product.name}}</text>
+        <view class="pro-price">
+          <view>
+            <!-- 不知道单价字段，暂时空着 -->
+            <!-- {{product.price/100}} -->
+            <text>¥<text>***</text>/{{product.unit}}</text>
+            <text class="pro-weight">x {{product.quantity}}{{product.unit}}</text>
+          </view>
+          <!-- {{product.amount/100}} -->
+          <text wx:if="{{userInfo.type == 2}}" class="sum-price">¥***</text>
+        </view>
+      </view>
+      <view class="info-card-item-content-sumary">
+        <view>
+          <text>分拣单 {{item.sortings_count}}</text>
+          <text class="mar-left">{{item.stateName}} {{item.same_state_sorting_count}}</text>
+        </view>
+        <!-- {{item.total_amount/100}} -->
+        <text wx:if="{{userInfo.type == 2}}">合计：¥<text>***</text></text>
+      </view>
+      <view class="last-item">
+        <text wx:if="{{item.purchase_delivery_unnormal}}">处理结果：{{item.purchase_delivery_unnormal.desc}}</text>
+        <text wx:if="{{item.purchase_delivery_unnormal}}">配送车辆：{{item.purchase_delivery_unnormal.car.number}}<text style="margin-left:80rpx">司机：{{item.purchase_delivery_unnormal.driver.name}}</text></text>
+        <text wx:if="{{!item.purchase_delivery_unnormal}}">供应商：{{item.supplier.name}}</text>
+        <text wx:if="{{!item.purchase_delivery_unnormal}}">提货点：{{item.supplier.address}}</text>
+        <!-- <text>¥15000</text> -->
+        
+        <view class="btns">
+          <!-- <text wx:if="{{userInfo.type == 2 && (item.state == 3 || item.state == 4 || item.state == 5 || item.state == 6)}}" data-id="{{item.id}}" bindtap="goPurchaseInfo">详情</text> -->
+          <text wx:if="{{userInfo.type == 1 && item.state == 4}}" class="action-style"  bindtap="goPurchaseInfo" data-id="{{item.id}}">提货装车</text>
+          <text wx:if="{{userInfo.type == 1 && item.state == 5}}" class="action-style" bindtap="goPurchaseInfo" data-id="{{item.id}}">配送异常</text>
+          <!-- wx:if="{{userInfo.type == 2 && item.state == 2}}" -->
+          <text wx:if="{{userInfo.type == 2 && item.state == 2}}" catchtap="goPurchaseInfo" data-id="{{item.id}}" class="action-style">开始质检</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+</view>
+<view class="no-data-box" wx:else>
+    <image class="no-data" src="../../assets/quesheng_content_img_two@2x.png"></image>
+    <text>暂无数据 ~</text>
+</view>
+
+
+<!-- 配送异常提交 -->
+<deliveryPopup id='popup' 
+      title='配送异常提交' 
+      content='学会了吗' 
+      btn_no='取消' 
+      btn_ok='提交'
+      bind:error="_error"  
+      bind:success="_success">
+      <form class="login" bindsubmit="loginOrRegister">
+        <view class="login-input">
+          <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+            <view>
+              {{array[index]}}llllll
+              <image src="../../assets/pinlei_content_icon_arrow@2x.png"></image>
+            </view>
+          </picker>
+        </view>
+        <view class="login-input second-input">
+          <textarea name="password" value="{{loginInfo.password}}" placeholder-class="teatarea-placeholder" placeholder="请填写异常情况描述"/>
+        </view>
+        <view class="images-style">
+          <view bindtap="chooseImage">
+            <image src="../../assets/addgoods_content_botton_picture@2x.png"></image>
+          </view>
+          <view>
+            <image class="cha-cion" src="../../assets/addgoods_content_icon_close 拷贝@2x.png"></image>
+            <image></image>
+          </view>
+          <view>
+            <image class="cha-cion" src="../../assets/addgoods_content_icon_close 拷贝@2x.png"></image>
+            <image></image>
+          </view>
+          <view>
+            <image class="cha-cion" src="../../assets/addgoods_content_icon_close 拷贝@2x.png"></image>
+            <image></image>
+          </view>
+          <view>
+            <image class="cha-cion" src="../../assets/addgoods_content_icon_close 拷贝@2x.png"></image>
+            <image></image>
+          </view>
+        </view>
+      </form>
+</deliveryPopup>
+
+<!-- 开始质检弹窗 -->
+<deliveryPopup id='inspectionPopup' 
+      title='质检结果' 
+      btn_no='取消' 
+      btn_ok='确认'
+      bind:error="require_error"
+      bind:success="inspection_success"
+      >
+      <form class="login" bindsubmit="loginOrRegister">
+        <view class="login-input">
+          <radio-group class="radio-group" bindchange="radioChange">
+            <label class="radio" wx:for="{{items}}" wx:key="value">
+              <view class="tui-menu-list">
+                <radio class="checkCircle" color="#007aff" value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+              </view>
+            </label>
+          </radio-group>
+        </view>
+        <view class="login-input second-input no-margin-padding-top" wx:if="{{showReasonBox}}">
+          <textarea name="reason" value="{{reason}}" bindinput="getReason" placeholder-class="teatarea-placeholder" placeholder="请输入质检异常原因"/>
+        </view>
+      </form>
+</deliveryPopup>
+
+
+
+<!-- <navigator url="/pages/login/login">
+  首页
+</navigator> -->
+<!-- 自定义组件简单使用 -->
+<!-- <number-count number="{{number}}" bindnumberChange="numberChange"></number-count> -->
+<!-- <view>{{number}}</view> -->

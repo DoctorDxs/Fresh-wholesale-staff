@@ -1,0 +1,58 @@
+/* pages/goodsInfo/goodsInfo.wxss */
+page{
+  background: #F1F2F7;
+}
+.address-name{
+  background: #FFFFFF;
+  padding: 30rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #131936;
+  line-height: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.purchase-order-info{
+  margin: 20rpx 30rpx 0;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 0 30rpx;
+}
+/* 采购单信息 */
+.purchase-order-info-title{
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #131936;
+  line-height: 30rpx;
+  margin: 0 0 40rpx;
+  padding-top: 30rpx;
+  padding-left: 20rpx;
+  position: relative;
+}
+.purchase-order-info-title::before{
+  position: absolute;
+  left: 0;
+  top: 32rpx;
+  content: '';
+  width: 4rpx;
+  height: 25rpx;
+  background: #278CFF;
+  border-radius: 2rpx;
+}
+
+.purchase-order-info-item{
+  font-size: 26rpx;
+  font-weight: 400;
+  color: #5A5D69;
+  line-height: 30rpx;
+  padding-bottom: 30rpx;
+  display: flex;
+  align-items: center;
+}
+.purchase-order-info-item text:first-of-type{
+  margin-right: 50rpx;
+  min-width: 130rpx;
+}
+.purchase-order-info:last-of-type{
+  margin-bottom: 20rpx;
+}

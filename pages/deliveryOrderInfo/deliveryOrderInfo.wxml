@@ -1,0 +1,221 @@
+<!--pages/deliveryOrderInfo/deliveryOrderInfo.wxml-->
+<!-- 头部 -->
+<view class="delivery-info-header">
+  <view class="delivery-info-header-left">
+    <view>状态：<text style="font-size:28rpx;">{{stateName}}</text></view>
+    <view>拟提货时间：{{info.proposed_delivery_at}}</view>
+  </view>
+
+  <view class="delivery-info-header-right">
+    <view>配送单数量：{{info.sortings_count}}</view>
+    <view>{{stateName}}：{{info.same_state_sorting_count}}</view>
+  </view>
+</view>
+
+<!-- 配送要求 -->
+<view class="deliver-requirements">
+  <view class="deliver-requirements-title">
+    <text>配送要求：</text>
+    <text style="color:#278CFF" bindtap="showRequirePopup">查看全部</text>
+  </view>
+  <view class="deliver-requirements-content">
+    <view>{{info.delivery_condition[0].requirement}}</view>
+  </view>
+</view>
+
+<!-- 异常处理 -->
+<view class="abnormal-handle" wx:if="{{stateName=='异常'&&info.audit_record&&info.audit_record.length>0}}">
+  <view class="abnormal-handle-title">异常处理</view>
+  <view class="abnormal-handle-content">
+    <view class="abnormal-handle-small-box" wx:for="{{info.audit_record}}" wx:key="id">
+      <view class="first">
+        <!-- <text>03:23</text> -->
+        <text>{{item.check_at}}</text>
+      </view>
+      <view class="second" wx:if="{{item.state==1}}">未审核</view>
+      <view class="second" wx:if="{{item.state==2}}">审核通过</view>
+      <view class="second" wx:if="{{item.state==3}}">审核未通过</view>
+      <view class="third">
+        <text>{{item.check_desc}}</text>
+        <text>配送车辆：{{item.car.number}}</text>
+        <text>司机：{{item.driver.name}}</text>
+      </view>
+    </view>
+    <view class="abnormal-handle-small-box">
+      <view class="first">
+        <!-- <text>03:23</text> -->
+        <text>{{info.purchase_delivery_unnormal.check_at}}</text>
+      </view>
+      <view class="second" wx:if="{{info.purchase_delivery_unnormal.state==1}}">未审核</view>
+      <view class="second" wx:if="{{info.purchase_delivery_unnormal.state==2}}">审核通过</view>
+      <view class="second" wx:if="{{info.purchase_delivery_unnormal.state==3}}">审核未通过</view>
+      <view class="third">
+        <text>{{info.purchase_delivery_unnormal.check_desc}}</text>
+        <text>配送车辆：{{info.purchase_delivery_unnormal.car.number}}</text>
+        <text>司机：{{info.purchase_delivery_unnormal.driver.name}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="purchase-title">
+  <text>分检单</text>
+  <view>
+    <text style="margin-right:30rpx">数量 {{info.sortings_count}}</text>
+    <text>{{stateName}} {{info.same_state_sorting_count}}</text>
+  </view>
+</view>
+
+<!-- 分拣单信息 -->
+<view class="info-card">
+  <view class="info-card-item" wx:for="{{info.sortings}}" wx:key="id" data-id="{{item.id}}" bindtap="goInfo">
+    <view class="info-card-item-title">
+      <text style="width:48%">分拣单{{index+1}}<text style="margin-left:30rpx">编号：{{item.sn}}</text></text>
+      <!-- <view><text class="pink-style">异常申报</text></view> -->
+      <view wx:if="{{item.state == 1}}"><text class="pink-style">待备货</text></view>
+      <view wx:if="{{item.state == 2}}"><text class="pink-style">待质检</text></view>
+      <view wx:if="{{item.state == 3}}"><text class="pink-style">质检异常</text></view>
+      <view wx:if="{{item.state == 4}}"><text class="pink-style">待提货</text></view>
+      <view wx:if="{{item.state == 5}}"><text class="pink-style">配送中</text></view>
+      <view wx:if="{{item.state == 6}}"><text class="pink-style">配送完成</text></view>
+    </view>
+    <view class="info-card-item-content" wx:for="{{item.items}}"  wx:for-item="product" wx:key="index">
+      <view class="info-card-item-content-box">
+        <text class="pro-title">{{product.name}}</text>
+        <view class="pro-price">
+          <view>
+          <!-- {{product.price_plat/100}} -->
+            <text>¥<text>***</text>/{{product.unit}}</text>
+            <text class="pro-weight">x {{product.num}}{{product.unit}}</text>
+          </view>
+          <!-- <text class="sum-price">¥15000.00</text> -->
+        </view>
+      </view>
+    </view>
+    <view class="info-person">
+        <view class="info-person-top">
+          <view class="info-person-top-left">
+            <image src="../../assets/order_content_icon_address@2x.png"></image>
+            <text style="font-weight: bold;">{{item.wholesaler_receive_address.contact}}</text>
+          </view>
+          <text>{{item.wholesaler_receive_address.phone}}</text>
+        </view>
+        <view class="info-person-bottom">{{item.wholesaler_receive_address.province_name+item.wholesaler_receive_address.city_name+item.wholesaler_receive_address.area_name+item.wholesaler_receive_address.detail}}</view>
+      </view>
+      <view class="text-btns">
+        <!--  确认提货判断 wx:if="{{stateName=='待提货'}}" -->
+          <text wx:if="{{item.state == 4}}" catchtap="checkPickUp" data-id="{{item.id}}">确认提货</text>
+          <view class="driver" wx:if="{{item.state == 6}}">
+            <text>车牌：{{info.car.number}}</text>
+            <text>姓名：{{info.driver.name}}</text>
+          </view>
+      </view>
+  </view>
+</view>
+
+<!-- 提货商品明细 -->
+<view class="purchase-order-info">
+  <view class="purchase-order-info-title">
+    <text>提货商品明细</text>
+    <text bindtap="goSeeGoods">查看商品信息</text>
+  </view>
+  <view class="info-card-item-content-box" wx:for="{{info.purchase_delivery_goods}}" wx:key="id">
+        <text class="pro-title">{{item.name}}</text>
+        <view class="pro-price">
+          <view>
+          <!-- {{item.price/100}} -->
+            <text>¥<text> ***</text>/{{item.unit}}</text>
+            <text class="pro-weight">x {{item.quantity}}{{item.unit}}</text>
+          </view>
+          <!-- <text class="sum-price">¥15000.00</text> -->
+        </view>
+  </view>
+</view>
+
+<!-- 提货配送单信息 -->
+<view class="purchase-order-info">
+  <view class="purchase-order-info-title no-border">提货配送单信息</view>
+  <view class="purchase-order-info-item">
+    <text>提货单编号</text>
+    <text>{{info.purchase.sn}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.purchase.created_at}}">
+    <text>下 单 时 间</text>
+    <text>{{info.purchase.created_at}}</text> 
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.purchase.receive_order_at}}">
+    <text>接 单 时 间</text>
+    <text>{{info.purchase.receive_order_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.prepare_at}}">
+    <text>备 货 时 间</text>
+    <text>{{info.prepare_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.qc_at}}">
+    <text>质 检 时 间</text>
+    <text>{{info.qc_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.send_at}}">
+    <text>提 货 时 间</text>
+    <text>{{info.send_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.receive_at}}">
+    <text>配 送 完 成</text>
+    <text>{{info.receive_at}}</text>
+  </view>
+</view>
+
+<!-- 按钮 -->
+<!-- wx:if="{{stateName=='配送中'}}" -->
+<view wx:if="{{stateName=='配送中'}}" class="btn {{deliveryClick?'disable-style':''}}">
+  <text bindtap="showPopup">配送异常</text>
+</view>
+
+<!-- 配送异常提交 -->
+<deliveryPopup id='popup' 
+      title='配送异常提交' 
+      content='学会了吗' 
+      btn_no='取消' 
+      btn_ok='提交'
+      bind:error="_error"  
+      bind:success="_success">
+      <form class="login" bindsubmit="loginOrRegister">
+        <view class="login-input">
+          <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+            <view>
+              {{array[index]}}
+              <image src="../../assets/pinlei_content_icon_arrow@2x.png"></image>
+            </view>
+          </picker>
+        </view>
+        <view class="login-input second-input">
+          <textarea name="password" bindinput="getReason" value="{{reason}}" placeholder-class="teatarea-placeholder" placeholder="请填写异常情况描述"/>
+        </view>
+        <view class="images-style">
+          <view bindtap="chooseImage">
+            <image src="../../assets/addgoods_content_botton_picture@2x.png"></image>
+          </view>
+          <view wx:for="{{formData.qualification}}" wx:key="index">
+            <image bindtap="deleteImage" data-index='{{index}}' class="cha-cion" src="../../assets/addgoods_content_icon_close 拷贝@2x.png"></image>
+            <image src="{{item}}"></image>
+          </view>
+        </view>
+      </form>
+</deliveryPopup>
+
+<!-- 配送要求弹窗 -->
+<deliveryPopup id='requirePopup' 
+      title='配送要求' 
+      showFlag='{{false}}'
+      bind:error="require_error" >
+      <view class="require-big-box">
+        <view class="small-box" wx:for="{{info.delivery_condition}}" wx:key="id">
+          <view class="small-box-title">{{item.name}}</view>
+          <view class="small-box-subtitle">配送要求：</view>
+          <view class="small-box-content">
+              <view>{{item.requirement}}</view>
+          </view>
+        </view>
+      </view>
+      
+</deliveryPopup>

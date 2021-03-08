@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "提货配送单详情",
+  "usingComponents": {
+    "deliveryPopup": "../../components/popup/popup"
+  }
+}

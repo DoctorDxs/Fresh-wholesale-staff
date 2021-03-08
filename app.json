@@ -1,0 +1,21 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/login/login", 
+    "pages/my/my",
+    "pages/setPwd/setPwd",
+    "pages/account/set",
+    "pages/info/info",
+    "pages/purchaseInfo/purchaseInfo",
+    "pages/goodsInfo/goodsInfo",
+    "pages/deliveryOrderInfo/deliveryOrderInfo"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "日盛宝员工端",
+    "navigationBarTextStyle":"black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

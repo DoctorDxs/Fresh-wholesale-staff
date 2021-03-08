@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="user">
+    <view class="user-info">
+      <view class="user-name">Dr.D</view>
+      <!-- TODO这个图要切周一问下UI -->
+      <view class="">管理员</view>
+    </view>
+    <!-- 为啥这里的头像是正六边形？？？，UI这么随意的吗，明天需要确认下 -->
+    <image class="avatar" src="../../imgs/icon/dgr.jpg"></image>
+  </view>
+  <view class="my-items">
+    <view class="my-item fl-center" bindtap="setAccount">
+      <view class="fl-center"><image src="../../imgs/icon/mine_content_icon_setup.png" class="my-item-icon"></image><text>账号设置</text></view>
+      <image src="../../imgs/icon/center_content_icon_more.png" class="more-icon"></image>
+    </view>
+    <view class="my-item">
+      <button open-type="contact" class="contact-btn fl-center">
+        <view class="fl-center"><image src="../../imgs/icon/mine_content_icon_kefu.png" class="my-item-icon"></image><text>平台客服</text></view>
+        <image src="../../imgs/icon/center_content_icon_more.png" class="more-icon"></image>
+      </button>
+    </view>
+  </view>
+</view>
+

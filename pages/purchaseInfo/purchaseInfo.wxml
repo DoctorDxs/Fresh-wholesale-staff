@@ -1,0 +1,159 @@
+<!--pages/purchaseInfo/purchaseInfo.wxml-->
+<!-- 头部 -->
+<view class="purchase-info-header">
+  <view class="purchase-info-header-item">
+    <text>采购单状态：<text style="font-size: 30rpx;">{{stateName}}</text></text>
+    <text>分拣单数量：{{info.sortings_count}}</text>
+  </view>
+  <view class="purchase-info-header-item">
+    <text>拟提货时间：{{info.proposed_delivery_at}}</text>
+    <text>{{stateName}}：{{info.same_state_sorting_count}}</text>
+  </view>
+</view>
+
+<view class="purchase-title">
+  <text>分检单</text>
+  <view>
+    <text style="margin-right:30rpx">数量 {{info.sortings_count}}</text>
+    <text>{{stateName}} {{info.same_state_sorting_count}}</text>
+  </view>
+</view>
+<!-- 分拣单信息 -->
+<view class="info-card">
+  <!--  wx:for="{{info.items}}" wx:key="id" -->
+  <view class="info-card-item" wx:for="{{info.sortings}}" wx:key="id" data-id="{{item.id}}" bindtap="goInfo">
+    <view class="info-card-item-title">
+      <text style="width:48%">分拣单{{index+1}}<text style="margin-left:30rpx">编号：{{item.sn}}</text></text>
+      <!-- <view>（待重新质检)<text class="pink-style">异常申报</text></view> -->
+      <view wx:if="{{item.state == 1}}"><text class="pink-style">待备货</text></view>
+      <view wx:if="{{item.state == 2}}"><text class="pink-style">待质检</text></view>
+      <view wx:if="{{item.state == 3}}"><text class="pink-style">质检异常</text></view>
+      <view wx:if="{{item.state == 4}}"><text class="pink-style">待提货</text></view>
+      <view wx:if="{{item.state == 5}}"><text class="pink-style">待配送</text></view>
+      <view wx:if="{{item.state == 6}}"><text class="pink-style">配送完成</text></view>
+    </view>
+    <view class="info-card-item-content">
+      <view class="info-card-item-content-box" wx:for="{{item.items}}" wx:for-item="product" wx:key="index">
+        <text class="pro-title">{{product.name}}</text>
+        <view class="pro-price">
+          <view>
+          <!-- {{product.price_plat/100}} -->
+            <text>¥<text>***</text>/{{product.unit}}</text>
+            <text class="pro-weight">x {{product.num}}{{product.unit}}</text>
+          </view>
+          <!-- {{product.amount_plat/100}} -->
+          <text class="sum-price">¥***</text>
+        </view>
+      </view>
+      <view class="info-card-item-content-sumary" wx:if="{{item.state == 2&&!item.unusual_reason}}">
+        <view>
+          <!-- {{item.total_amount_supplier/100}} -->
+          <text style="color: #FE461F;font-weight: bold;">¥***</text>
+          <!-- <text class="mar-left">1号车：浙</text> -->
+        </view>
+        <text catchtap="startInspection" data-id="{{item.id}}">开始质检</text>
+      </view>
+    </view>
+    <view class="last-item">
+        <view class="last-item-explain" wx:if="{{item.unusual_reason}}">
+          <text>质检结果：异常</text>
+          <text>原因：{{item.unusual_reason}}</text>
+          <text>质检员：{{info.qc.name}}</text>
+        </view>
+        <view class="btns" wx:if="{{item.unusual_reason}}">
+          <view>
+            <!-- {{item.total_amount_supplier/100}} -->
+            <text style="margin-right:40rpx">¥***</text>
+            <!-- <text>一号车：豫</text> -->
+          </view>
+          <text wx:if="{{item.state == 2&&item.unusual_reason}}" catchtap="startInspection" data-id="{{item.id}}">重新质检</text>
+          <text wx:if="{{item.state == 3&&item.unusual_reason}}" style="background: #ABB6C4;">重新质检</text>
+        </view>
+    </view>
+  </view>
+</view>
+
+<!-- 采购商品明细 -->
+<view class="purchase-order-info">
+  <view class="purchase-order-info-title">
+    <text>采购单信息</text>
+    <text bindtap="goSeeGoods">查看商品信息</text>
+  </view>
+  <view class="info-card-item-content-box" wx:for="{{info.purchase_delivery_goods}}" wx:key="id">
+        <text class="pro-title">{{item.name}}</text>
+        <view class="pro-price">
+          <view>
+            <!-- {{item.price/100}} -->
+            <text>¥<text>***</text>/{{item.unit}}</text>
+            <text class="pro-weight">x {{item.quantity}}{{item.unit}}</text>
+          </view>
+          <!-- {{item.amount/100}} -->
+          <text class="sum-price">¥***</text>
+        </view>
+  </view>
+    <view class="purchase-order-info-sumary">
+        <view>
+          采购单总价：
+        </view>
+        <!--  {{info.total_amount/100}} -->
+        <text>¥***</text>
+    </view>
+</view>
+
+<!-- 采购单信息 -->
+<view class="purchase-order-info">
+  <view class="purchase-order-info-title no-border">采购单信息</view>
+  <view class="purchase-order-info-item">
+    <text>采购单编号</text>
+    <text>{{info.purchase.sn}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>下 单 时 间</text>
+    <text>{{info.purchase.created_at}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>接 单 时 间</text>
+    <text>{{info.purchase.receive_order_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.prepare_at}}">
+    <text>备 货 时 间</text>
+    <text>{{info.prepare_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.qc_at}}">
+    <text>质 检 时 间</text>
+    <text>{{info.qc_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.send_at}}">
+    <text>提 货 时 间</text>
+    <text>{{info.send_at}}</text>
+  </view>
+  <view class="purchase-order-info-item" wx:if="{{info.receive_at}}">
+    <text>配 送 完 成</text>
+    <text>{{info.receive_at}}</text>
+  </view>
+</view>
+
+<!-- 开始质检弹窗 -->
+<deliveryPopup id='inspectionPopup' 
+      title='质检结果' 
+      btn_no='取消' 
+      btn_ok='确认'
+      bind:error="require_error"
+      bind:success="inspection_success"
+      >
+      <form class="login" bindsubmit="loginOrRegister">
+        <view class="login-input">
+          <radio-group class="radio-group" bindchange="radioChange">
+            <label class="radio" wx:for="{{items}}" wx:key="value">
+              <view class="tui-menu-list">
+                <radio class="checkCircle" color="#007aff" value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+              </view>
+            </label>
+          </radio-group>
+        </view>
+        <view class="login-input second-input no-margin-padding-top" wx:if="{{showReasonBox}}">
+          <textarea name="password" bindinput="getReason" value="{{reason}}" placeholder-class="teatarea-placeholder" placeholder="请输入质检异常原因"/>
+        </view>
+      </form>
+</deliveryPopup>
+

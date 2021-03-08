@@ -1,0 +1,15 @@
+<view class="wx-popup" style='display:{{flag?"":"none"}};'>
+  <view class='popup-container'>
+    <view class="close_icon">
+      <image class="close-icon" bindtap='_error' src="../../assets/delete_content_icon_close@2x.png"></image>
+    </view>
+    <view class="wx-popup-title">{{title}}</view>
+    <view class="wx-popup-content">
+      <slot></slot>
+    </view>
+    <view wx:if="{{showFlag}}" class="wx-popup-btn">
+      <text class="btn-no" bindtap='_error'>{{btn_no}}</text>
+      <text class="btn-ok" bindtap='_success'>{{btn_ok}}</text>
+    </view>
+  </view>
+</view>

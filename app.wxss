@@ -1,0 +1,42 @@
+view,text{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+page {
+  font-family: PingFang SC;
+  font-size: 28rpx;
+  color: #060C2B;
+  line-height: normal;
+}
+
+.fl-center {
+  display: flex;
+  align-items: center;
+}
+
+/* button 重置 */
+button {
+  font-size: 28rpx;
+  background-color: #fff;
+  border: none;
+  padding: 0!important;
+  margin: 0;
+  font-weight: normal!important;
+}
+
+input {
+  outline: none;
+  border: none;
+  list-style: none;
+}
+
+button::after {
+  border: none;
+}
+
+.omit{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}

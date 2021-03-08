@@ -1,0 +1,306 @@
+/* pages/info/info.wxss */
+page{
+  background: #F1F2F7;
+}
+.info-header{
+  height: 184rpx;
+  background: linear-gradient(270deg, #0EBCFC, #278CFF);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: white;
+  font-size: 24rpx;
+}
+.info-header image{
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 40rpx;
+}
+.info-header-title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 318rpx;
+}
+.info-header-title > text{
+  width: 100%;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+.info-header-person{
+  position: absolute;
+  right: 30rpx;
+  bottom: 46rpx;
+}
+.info-header-title-big-font{
+  font-size: 30rpx;
+  font-weight: 400;
+  line-height: 30rpx;
+}
+.info-header-title .info-header-title-car{
+  margin-top: 30rpx;
+}
+
+/* 个人信息 */
+.info-person{
+  display: flex;
+  flex-direction: column;
+  padding: 0 30rpx;
+  background: #FFFFFF;
+}
+.info-person-top{
+  display: flex;
+  justify-content: space-between;
+  font-size: 30rpx;
+  align-items: center;
+  margin-top: 34rpx;
+}
+.info-person-top-left,.info-person-icon{
+  display: flex;
+  align-items: center;
+}
+.info-person-top-left > image{
+  width: 34rpx;
+  height: 34rpx;
+  margin-right: 30rpx;
+}
+.info-person-top-left >text{
+  width:150rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+.info-person-icon{
+  margin-left: 36rpx;
+  position: relative;
+  font-size: 24rpx;
+}
+.info-person-icon >image{
+  width: 48rpx;
+  height: 48rpx;
+  position: absolute;
+  top: 50%;
+  left: -8rpx;
+  transform: translateY(-50%);
+}
+.info-person-icon .spe-back{
+  min-width: 166rpx;
+  padding-left: 52rpx;
+  padding-right: 18rpx;
+  background: linear-gradient(0deg, #FFED8F, #FFE03E);
+  height: 40rpx;
+  line-height: 42rpx;
+  border-radius: 20rpx;
+}
+.info-person-bottom{
+  font-size: 26rpx;
+  font-weight: 400;
+  color: #5A5D69;
+  line-height: 30rpx;
+  margin-left: 58rpx;
+  margin-bottom: 40rpx;
+  margin-top: 20rpx;
+}
+/* 商品信息 */
+.info-pro,.purchase-order-info{
+  margin: 20rpx 30rpx 0;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 0 30rpx;
+}
+.info-card-item-content-box{
+  display: flex;
+  flex-direction: column;
+  font-size: 24rpx;
+  padding: 30rpx 0;
+  border-bottom: 1px solid #EEF0F5;
+}
+.info-card-item-content-box:last-of-type{
+  border: none;
+}
+.pro-title{
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #131936;
+  line-height: 30rpx;
+  margin-bottom: 32rpx;
+}
+.pro-price{
+  display: flex;
+  font-weight: 400;
+  color: #5A5D69;
+  line-height: 30rpx;
+  align-items: center;
+}
+.big-font{
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #131936;
+}
+.pro-weight{
+  margin-left: 48rpx;
+}
+.info-card-item-content-sumary{
+  display: flex;
+  padding: 36rpx 0;
+  box-sizing: border-box;
+  font-size: 26rpx;
+  font-weight: 400;
+  line-height: 30rpx;
+  justify-content: space-between;
+  color: #FE461F;
+}
+
+/* 采购单信息 */
+.purchase-order-info-title{
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #131936;
+  line-height: 30rpx;
+  margin: 0 0 40rpx;
+  padding-top: 30rpx;
+  padding-left: 20rpx;
+  position: relative;
+}
+.purchase-order-info-title::before{
+  position: absolute;
+  left: 0;
+  top: 32rpx;
+  content: '';
+  width: 4rpx;
+  height: 25rpx;
+  background: #278CFF;
+  border-radius: 2rpx;
+}
+.purchase-order-info-item{
+  font-size: 26rpx;
+  font-weight: 400;
+  color: #5A5D69;
+  line-height: 30rpx;
+  padding-bottom: 30rpx;
+  display: flex;
+  align-items: center;
+}
+.purchase-order-info-item text:first-of-type{
+  margin-right: 50rpx;
+  min-width: 130rpx;
+}
+.purchase-order-info:last-of-type{
+  margin-bottom: 20rpx;
+}
+
+.last-item-explain{
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx;
+  font-size: 24rpx;
+  color: #FE461F;
+  background: rgba(254, 70, 31, 0.1);
+  /* border-radius: 8px; */
+}
+.last-item-explain text{
+  margin-bottom: 20rpx;
+}
+.last-item-explain text:last-of-type{
+  margin-bottom: 0rpx;
+}
+.btn{
+  height: 112rpx;
+  background: #FFFFFF;
+  margin-top: 54rpx;
+  display: flex;
+  align-items: center;
+}
+.btn text{
+  margin: 0 auto;
+  display: inline-block;
+  width: 690rpx;
+  height: 80rpx;
+  background: linear-gradient(270deg, #278CFF, #0EBCFC);
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 80rpx;
+}
+
+/* 表单弹窗 */
+.login-input textarea{
+  width: 470rpx;
+  background: #F8FAFC;
+  border-radius: 8rpx;
+  margin: 0 auto;
+  padding: 20rpx;
+  font-size: 26rpx;
+  height: 140rpx;
+}
+.teatarea-placeholder{
+  font-size: 26rpx;
+  font-weight: 400;
+  color: #999FB1;
+  line-height: 30rpx;
+}
+
+.login-input picker{
+  width: 470rpx;
+  height: 64rpx;
+  background: #F8FAFC;
+  border-radius: 8rpx;
+  margin: 0 auto;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+}
+.second-input{
+  margin: 20rpx 0 30rpx;
+}
+.login-input picker view{
+  line-height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.login-input picker image{
+  width: 16rpx;
+  height: 12rpx;
+}
+.images-style{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 44rpx 20rpx;
+}
+.images-style view{
+  width: 116rpx;
+  height: 116rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  position: relative;
+}
+.images-style view image{
+  width: 100%;
+  height: 100%;
+}
+.images-style view .cha-cion{
+  position: absolute;
+  width: 30rpx;
+  height: 30rpx;
+  top: -15rpx;
+  right: -15rpx;
+}
+/* 配送要求弹窗 */
+.radio-group{
+  padding:20rpx
+}
+.radio-group .tui-menu-list{
+  font-size: 30rpx;
+  color: #131936;
+  line-height: 30rpx;
+  margin-bottom: 30rpx;
+}
+.no-margin-padding-top{
+  margin-top: 0;
+  padding-top: 0;
+}

@@ -1,0 +1,18 @@
+<!--pages/goodsInfo/goodsInfo.wxml-->
+<view class="address-name">{{detail.supplier.address}}</view>
+
+<view class="purchase-order-info" wx:for="{{detail.purchase_delivery_goods}}" wx:key="id">
+  <view class="purchase-order-info-title">{{item.name}}</view>
+  <view class="purchase-order-info-item">
+    <text>生产时间：</text>
+    <text>{{item.stockUpInfo.produced_at}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>商品产地：</text>
+    <text>{{item.stockUpInfo.product_place}}</text>
+  </view>
+  <view class="purchase-order-info-item">
+    <text>保质期：</text>
+    <text>{{item.stockUpInfo.quality_days}}天</text>
+  </view>
+</view>
